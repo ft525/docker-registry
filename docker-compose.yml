@@ -1,0 +1,31 @@
+version: '3'
+
+
+services:
+    # Registry
+    registry:
+        container_name: ${COMPOSE_PROJECT_NAME}_registry
+        image: registry:2.7
+        volumes:
+            # 憑證
+            - ./data/certs:/certs
+            # Auth (登入帳密)
+            - ./etc/registry27/auth:/auth
+            # Repository
+            - ./volumes/registry27:/var/lib/registry
+            # Log (預設是 stdout)
+        ports:
+            - '5000:5000'
+        environment:
+            - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/default.crt
+            - REGISTRY_HTTP_TLS_KEY=/certs/default.key
+            - REGISTRY_AUTH=htpasswd
+            - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
+            - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
+        networks:
+            - registry-net
+
+
+networks:
+    registry-net:
+        driver: bridge
