@@ -44,3 +44,31 @@ docker-compose down
 ###### 參考
 https://docs.docker.com/registry/deploying/ (部署)
 https://docs.docker.com/registry/configuration/ (設定)
+
+
+
+
+## 附錄
+#### Push image to private registry
+1. 先正確的 tag image
+docker tag SOURCE_IMAGE[:TAG] [REGISTRY_HOST/][USERNAME/]IMAGE_NAME[:TAG]
+	例: docker tag xxx my.registry.com:5000/kyo/my-image:1.0
+
+2. Push image (需要先登入 docker login REGISTRY_HOST)
+docker push my.registry.com:5000/kyo/my-image:1.0
+
+// 參考
+https://stackoverflow.com/questions/28349392/how-to-push-a-docker-image-to-a-private-repository
+https://docs.docker.com/engine/reference/commandline/tag/
+https://docs.docker.com/engine/reference/commandline/push/
+
+
+#### Delete image from private registry
+// 參考
+https://blog.gss.com.tw/index.php/2020/07/17/dockerregistry/
+https://docs.docker.com/registry/spec/api/#deleting-an-image
+
+
+#### Registry API
+// 參考
+https://docs.docker.com/registry/spec/api/#detail
