@@ -3,15 +3,20 @@
 
 
 
-#### 1. 複製 docker login 預設帳密 (docker-registry / docker-registry)，或自訂 (請使用 Bcrypt - Apache v2.4 onwards)
-cp -p ./etc/registry27/auth/htpasswd.default ./etc/registry27/auth/htpasswd
+#### 1. 複製 docker-compose.yml 並調整內容
+cp -p docker-compose.yml.sample docker-compose.yml
 
 
-#### 1.1 調整專案名稱
+#### 1.2 複製 docker login 預設帳密 (docker-registry / docker-registry)，或自訂 (請使用 Bcrypt - Apache v2.4 onwards)
+cp -p ./etc/registry28/auth/htpasswd.default ./etc/registry28/auth/htpasswd
+
+
+#### 1.3 複製 .env & 調整專案名稱
+cp -p .env.sample .env
 vi .env => COMPOSE_PROJECT_NAME
 
 
-#### 1.2 使用 insecure registry (HTTP) (不建議)
+#### 1.4 使用 insecure registry (HTTP) (不建議)
 需要調整 client 端的 docker 設定
 參考: https://docs.docker.com/registry/insecure/
 

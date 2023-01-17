@@ -5,23 +5,25 @@ services:
     # Registry
     registry:
         container_name: ${COMPOSE_PROJECT_NAME}_registry
-        image: registry:2.7
+        image: registry:2.8
         volumes:
             # 憑證
             - ./data/certs:/certs
             # Auth (登入帳密)
-            - ./etc/registry27/auth:/auth
+            - ./etc/registry28/auth:/auth
             # Repository
-            - ./volumes/registry27:/var/lib/registry
+            - ./volumes/registry28:/var/lib/registry
             # Log (預設是 stdout)
         ports:
             - '5000:5000'
         environment:
+            # 參考: https://docs.docker.com/registry/configuration/#override-specific-configuration-options
+            # 格式: REGISTRY_variable
             - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/default.crt
             - REGISTRY_HTTP_TLS_KEY=/certs/default.key
             - REGISTRY_AUTH=htpasswd
-            - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
             - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
+            - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
         networks:
             - registry-net
 
