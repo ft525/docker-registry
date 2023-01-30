@@ -6,6 +6,7 @@ services:
     registry:
         container_name: ${COMPOSE_PROJECT_NAME}_registry
         image: registry:2.8
+        user: '${PROJECT_UID}:${PROJECT_GID}'
         volumes:
             # 憑證
             - ./data/certs:/certs

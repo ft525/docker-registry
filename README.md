@@ -18,6 +18,13 @@ vi .env => COMPOSE_PROJECT_NAME
 
 #### 1.4 使用 insecure registry (HTTP) (不建議)
 需要調整 client 端的 docker 設定
+	Docker Desktop for Windows 或 Docker Desktop for Mac (Settings > Docker Engine) ||
+	調整 /etc/docker/daemon.json (Linux) {
+		"insecure-registries" : ["myregistrydomain.com:5000"]
+	}
+
+Docker 會先嘗試使用 HTTPS，會忽略憑證錯誤; 如果 HTTPS 不可用才會改用 HTTP
+
 參考: https://docs.docker.com/registry/insecure/
 
 
@@ -26,7 +33,7 @@ openssl req \
     -newkey rsa:4096 -nodes -sha256 -keyout ./data/certs/default.key \
     -x509 -days 3650 -out ./data/certs/default.crt
 
-還需要將自簽憑證匯入信任的憑證，方法請參考下面連結
+還需要將自簽憑證匯入信任的憑證，方法請參考下面連結 (TODO: 目前好像不需要了，只需執行步驟 1.4。待確認)
 
 參考: https://docs.docker.com/registry/insecure/#use-self-signed-certificates
 
@@ -55,11 +62,15 @@ https://docs.docker.com/registry/configuration/ (設定)
 
 ## 附錄
 #### Push image to private registry
-1. 先正確的 tag image
+0. 登入 & 登出 private registry
+docker login [-u | --username {username}] [-p | --password] REGISTRY_HOST
+docker logout REGISTRY_HOST
+
+1. 正確的 tag image
 docker tag SOURCE_IMAGE[:TAG] [REGISTRY_HOST/][USERNAME/]IMAGE_NAME[:TAG]
 	例: docker tag xxx my.registry.com:5000/kyo/my-image:1.0
 
-2. Push image (需要先登入 docker login REGISTRY_HOST)
+2. Push image (需要先登入 private registry)
 docker push my.registry.com:5000/kyo/my-image:1.0
 
 // 參考
@@ -75,5 +86,12 @@ https://docs.docker.com/registry/spec/api/#deleting-an-image
 
 
 #### Registry API
+// 顯示 repository 列表
+GET /v2/_catalog
+
+// 顯示 repository 的 tag 列表 (name 從 /v2/_catalog 查看)
+GET /v2/{name}/tags/list
+
+
 // 參考
 https://docs.docker.com/registry/spec/api/#detail
