@@ -79,19 +79,29 @@ https://docs.docker.com/engine/reference/commandline/tag/
 https://docs.docker.com/engine/reference/commandline/push/
 
 
-#### Delete image from private registry
-// 參考
-https://blog.gss.com.tw/index.php/2020/07/17/dockerregistry/
-https://docs.docker.com/registry/spec/api/#deleting-an-image
-
-
-#### Registry API
+#### Registry APIs
 // 顯示 repository 列表
 GET /v2/_catalog
 
 // 顯示 repository 的 tag 列表 (name 從 /v2/_catalog 查看)
 GET /v2/{name}/tags/list
 
+// 取得 manifests 清單 (刪除 image 用; 請求需添加額外 Accept header 來取得正確的 digest (在 response header 裡的 Docker-Content-Digest)，請參考下面連結)
+GET /v2/{name}/manifests/{reference}
+
+// 刪除 image (reference 只能是 digest)
+DELETE /v2/{name}/manifests/{reference}
+
+// 垃圾回收 (刪除 image 後; 請在 registry 容器裡執行)
+[/bin/]registry garbage-collect [--dry-run] [--delete-untagged] /etc/docker/registry/config.yml
+
+// 刪除空的 repository (垃圾回收後; 請在 registry 容器裡執行)
+rm -R /var/lib/registry/docker/registry/v2/repositories/{name}
+
 
 // 參考
 https://docs.docker.com/registry/spec/api/#detail
+https://blog.gss.com.tw/index.php/2020/07/17/dockerregistry/
+https://docs.docker.com/registry/spec/api/#deleting-an-image
+https://docs.docker.com/registry/garbage-collection/
+https://stackoverflow.com/questions/43666910/remove-docker-repository-on-remote-docker-registry

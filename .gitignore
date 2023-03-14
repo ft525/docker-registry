@@ -4,6 +4,7 @@ docker-compose.yml
 data/certs/*
 !data/certs/default.crt
 !data/certs/default.key
+data/letsencrypt
 
 etc/registry28/auth/htpasswd
 

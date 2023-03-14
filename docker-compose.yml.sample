@@ -10,9 +10,11 @@ services:
         volumes:
             # 憑證
             - ./data/certs:/certs
+            # Certbot HTTPS 憑證
+            #- ./data/letsencrypt:/etc/letsencrypt
             # Auth (登入帳密)
             - ./etc/registry28/auth:/auth
-            # Repository
+            # Repository (注意目錄 owner 是否為 project user)
             - ./volumes/registry28:/var/lib/registry
             # Log (預設是 stdout)
         ports:
@@ -20,8 +22,18 @@ services:
         environment:
             # 參考: https://docs.docker.com/registry/configuration/#override-specific-configuration-options
             # 格式: REGISTRY_variable
+
+            # 預設 HTTPS 憑證
             - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/default.crt
             - REGISTRY_HTTP_TLS_KEY=/certs/default.key
+
+            # Certbot HTTPS 憑證
+            #- REGISTRY_HTTP_TLS_CERTIFICATE=/etc/letsencrypt/live/{domain}/fullchain.pem
+            #- REGISTRY_HTTP_TLS_KEY=/etc/letsencrypt/live/{domain}/privkey.pem
+
+            # 是否可刪除 image (預設: false)
+            #- REGISTRY_STORAGE_DELETE_ENABLED=true
+
             - REGISTRY_AUTH=htpasswd
             - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
             - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
