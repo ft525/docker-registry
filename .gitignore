@@ -1,10 +1,9 @@
 .env
 docker-compose.yml
 
-data/certs/*
-!data/certs/default.crt
-!data/certs/default.key
 data/letsencrypt
+data/pki/*
+!data/pki/default.*
 
 etc/registry28/auth/htpasswd
 

@@ -8,8 +8,8 @@ services:
         image: registry:2.8
         user: '${PROJECT_UID}:${PROJECT_GID}'
         volumes:
-            # 憑證
-            - ./data/certs:/certs
+            # HTTPS 憑證
+            - ./data/pki:/usr/local/pki
             # Certbot HTTPS 憑證
             #- ./data/letsencrypt:/etc/letsencrypt
             # Auth (登入帳密)
@@ -21,11 +21,11 @@ services:
             - '5000:5000'
         environment:
             # 參考: https://docs.docker.com/registry/configuration/#override-specific-configuration-options
-            # 格式: REGISTRY_variable
+            # 格式: REGISTRY_{variable}
 
             # 預設 HTTPS 憑證
-            - REGISTRY_HTTP_TLS_CERTIFICATE=/certs/default.crt
-            - REGISTRY_HTTP_TLS_KEY=/certs/default.key
+            - REGISTRY_HTTP_TLS_CERTIFICATE=/usr/local/pki/default.crt
+            - REGISTRY_HTTP_TLS_KEY=/usr/local/pki/default.key
 
             # Certbot HTTPS 憑證
             #- REGISTRY_HTTP_TLS_CERTIFICATE=/etc/letsencrypt/live/{domain}/fullchain.pem
@@ -38,9 +38,9 @@ services:
             - REGISTRY_AUTH_HTPASSWD_REALM=Registry Realm
             - REGISTRY_AUTH_HTPASSWD_PATH=/auth/htpasswd
         networks:
-            - registry-net
+            - registry_net
 
 
 networks:
-    registry-net:
+    registry_net:
         driver: bridge

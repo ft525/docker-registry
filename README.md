@@ -30,8 +30,8 @@ Docker 會先嘗試使用 HTTPS，會忽略憑證錯誤; 如果 HTTPS 不可用�
 
 #### 2. 產生自簽憑證，Common Name 請填該 domain (不含 port)
 openssl req \
-    -newkey rsa:4096 -nodes -sha256 -keyout ./data/certs/default.key \
-    -x509 -days 3650 -out ./data/certs/default.crt
+    -newkey rsa:4096 -nodes -sha256 -keyout ./data/pki/default.key \
+    -x509 -days 3650 -out ./data/pki/default.crt
 
 還需要將自簽憑證匯入信任的憑證，方法請參考下面連結 (TODO: 目前好像不需要了，只需執行步驟 1.4。待確認)
 
@@ -39,8 +39,8 @@ openssl req \
 
 
 #### 2.1 使用合格憑證
-請將憑證放到 ./data/certs/default.crt
-請將私鑰放到 ./data/certs/default.key
+請將憑證放到 ./data/pki/default.crt
+請將私鑰放到 ./data/pki/default.key
 
 
 #### 啟動 (要在專案目錄下執行)
