@@ -1,11 +1,8 @@
-version: '3'
-
-
 services:
     # Registry
     registry:
         container_name: ${COMPOSE_PROJECT_NAME}_registry
-        image: registry:2.8
+        image: registry:3.1
         user: '${PROJECT_UID}:${PROJECT_GID}'
         volumes:
             # HTTPS 憑證
@@ -13,9 +10,9 @@ services:
             # Certbot HTTPS 憑證
             #- ./data/letsencrypt:/etc/letsencrypt
             # Auth (登入帳密)
-            - ./etc/registry28/auth:/auth
+            - ./etc/registry/auth:/auth
             # Repository (注意目錄 owner 是否為 project user)
-            - ./volumes/registry28:/var/lib/registry
+            - ./volumes/registry:/var/lib/registry
             # Log (預設是 stdout)
         ports:
             - '5000:5000'

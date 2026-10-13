@@ -5,7 +5,7 @@ data/letsencrypt
 data/pki/*
 !data/pki/default.*
 
-etc/registry28/auth/htpasswd
+etc/registry/auth/htpasswd
 
 # Mac OS
 # Desktop Services Store
